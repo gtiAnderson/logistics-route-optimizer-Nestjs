@@ -61,6 +61,9 @@ export class RotasService {
   }
 
   async processarERetornarRota(id: string) {
+
+    console.log('ID RECEBIDO NO SERVICE:', id);
+
     // Passo 1: Buscar os Pontos
     const pontosSet = await this.pontosSetModel.findById(id).exec();
     if (!pontosSet) {

@@ -11,6 +11,7 @@ import { PontosSet, PontosSetSchema } from '../schemas/pontos-set.schema';
     ]),
   ],
   controllers: [PontosController],
-  providers: [PontosService]
+  providers: [PontosService],
+  exports: [MongooseModule]
 })
 export class PontosModule {}

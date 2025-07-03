@@ -1,12 +1,15 @@
-import { Controller, Post, Body, Get, Param, NotFoundException, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, NotFoundException, Patch, UseGuards } from '@nestjs/common';
 import { PontosService } from './pontos.service';
 import { CreatePontosSetDto } from './dto/create-pontos-set.dto';
+import { Throttle } from '@nestjs/throttler';
+import { AuthGuard } from '../security/auth/auth.guard';
 
 @Controller('pontos')
 export class PontosController {
   constructor(private readonly pontosService: PontosService) {}
 
-  @Post()
+  @UseGuards(AuthGuard)
+  @Post('')
   async create(@Body() body: CreatePontosSetDto) {
     return this.pontosService.create(body);
   }
@@ -20,6 +23,7 @@ export class PontosController {
     return pontosSet;
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string, 

@@ -10,10 +10,9 @@ export class PontosService {
     @InjectModel(PontosSet.name) private pontosSetModel: Model<PontosSetDocument>,
   ) {}
 
-  async create(dto: CreatePontosSetDto) {
-    const created = new this.pontosSetModel(dto);
-    const saved = await created.save();
-    return { id: saved._id };
+  async create(dto: CreatePontosSetDto): Promise<PontosSetDocument> {
+    const created = new this.pontosSetModel(dto);
+    return created.save(); 
   }
 
   async findOne(id: string) {
