@@ -19,23 +19,23 @@ export class RotasService {
   }
 
   private calcularRotaOtimizada(pontos: Ponto[]): { rota: Ponto[], distancia: number } {
-    // 1. Caso base: se não houver pontos, retorne uma rota vazia.
+    // se não houver pontos, retorne uma rota vazia.
     if (pontos.length === 0) {
       return { rota: [], distancia: 0 };
     }
 
-    // 2. Inicialização: Começamos do primeiro ponto da lista.
+    // primeiro ponto da lista.
     const pontosNaoVisitados = new Set(pontos.slice(1));
-    const rota = [pontos[0]]; // A rota final conterá os objetos Ponto completos.
+    const rota = [pontos[0]]; 
     let pontoAtual = pontos[0];
     let distanciaTotal = 0;
 
-    // 3. Loop principal: continue até que todos os pontos tenham sido visitados.
+    // continua ate que todos os pontos tenham sido visitados.
     while (pontosNaoVisitados.size > 0) {
       let pontoMaisProximo: Ponto | null = null;
       let menorDistancia = Infinity;
 
-      // 4. Encontre o ponto mais próximo entre os não visitados.
+      // procura o ponto mais próximo entre os não visitados.
       for (const ponto of pontosNaoVisitados) {
         const dist = this.calcularDistancia(pontoAtual, ponto);
         if (dist < menorDistancia) {
@@ -44,36 +44,32 @@ export class RotasService {
         }
       }
 
-      // 5. Adicione o ponto mais próximo à rota.
+      // adiciona o ponto mais próximo à rota.
       if (pontoMaisProximo) {
         distanciaTotal += menorDistancia;
         pontoAtual = pontoMaisProximo;
         rota.push(pontoAtual);
         pontosNaoVisitados.delete(pontoAtual);
       } else {
-        // Medida de segurança: se não encontrar um próximo ponto, quebre o loop.
         break;
       }
     }
 
-    // 6. Retorne a rota otimizada e a distância.
     return { rota, distancia: parseFloat(distanciaTotal.toFixed(2)) };
   }
 
   async processarERetornarRota(id: string) {
 
-    console.log('ID RECEBIDO NO SERVICE:', id);
-
-    // Passo 1: Buscar os Pontos
+    // busca os Pontos
     const pontosSet = await this.pontosSetModel.findById(id).exec();
     if (!pontosSet) {
       throw new NotFoundException('Conjunto de pontos não encontrado');
     }
-    // Passo 2: Calcular a Rota
+    // calcula a Rota
     const pontos: Ponto[] = pontosSet.pontos;
     const resultado = this.calcularRotaOtimizada(pontos);
 
-    // Passo 3: Persistir o Resultado
+    // persisti o Resultado
     const rotaCalculada = new this.rotaModel({
       pontoInicialId: pontos[0]?.id,
       ordemRota: resultado.rota.map(p => p.id),
@@ -82,7 +78,6 @@ export class RotasService {
     });
     await rotaCalculada.save();
 
-    // Passo 4: Retornar o Resultado
     return {
       rota: resultado.rota,
       distanciaTotal: resultado.distancia,

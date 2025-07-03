@@ -4,7 +4,6 @@ import { RotasService } from './rotas.service';
 // Mock do Ponto
 type Ponto = { id: number; x: number; y: number };
 
-// Classe extendida para expor o método privado para teste
 class RotasServiceTestable extends RotasService {
   public calcularRotaOtimizadaPublic(pontos: Ponto[]) {
     // @ts-ignore
@@ -16,7 +15,7 @@ describe('RotasService', () => {
   let service: RotasServiceTestable;
 
   beforeEach(() => {
-    // Instancia sem dependências do mongoose para teste puro
+    // sem dependências do mongoose para teste puro
     service = new RotasServiceTestable(null as any, null as any);
   });
 

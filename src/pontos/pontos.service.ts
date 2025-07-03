@@ -35,12 +35,10 @@ export class PontosService {
   // Atualize ou adicione pontos
   dto.pontos.forEach((novoPonto) => {
     if (pontosMap.has(novoPonto.id)) {
-      // Atualiza x e y do ponto existente
       const pontoExistente = pontosMap.get(novoPonto.id);
       pontoExistente.x = novoPonto.x;
       pontoExistente.y = novoPonto.y;
     } else {
-      // Adiciona novo ponto
       pontosSet.pontos.push(novoPonto);
     }
   });

@@ -10,8 +10,8 @@ import { APP_GUARD } from '@nestjs/core';
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
      ThrottlerModule.forRoot([{
-      ttl: 60000, // 60 segundos em milissegundos
-      limit: 10,  // 10 requisições por minuto por IP
+      ttl: 60000, // é 60 segundos só que em milissegundos
+      limit: 10,  // limita a 10 requisições por minuto 
     }]),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
